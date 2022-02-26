@@ -11,7 +11,7 @@ public class Ball : MonoBehaviour
     public int hitsTillSpeed = 10;
     public float speedIncrease = 1.1f;
     
-    private Rigidbody2D rb;
+    public Rigidbody2D rb;
     private int hits = 0;
 
     public void Awake()

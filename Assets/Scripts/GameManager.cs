@@ -27,15 +27,18 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI player1Wins;
     public TextMeshProUGUI player2Wins;
     public Canvas menuCanvas;
+    public Canvas pauseCanvas;
 
     //settings
     public int winScore = 10;
     public float defaultAiSeeDistance =  7f;
     public bool isBotGame = true;
+    public bool isPaused = false;
     
     private int player2Score;
     private int player1Score;
-    
+
+    private Vector2 ballVelocityPrePuase;
     // Start is called before the first frame update
     void Awake()
     {
@@ -47,6 +50,34 @@ public class GameManager : MonoBehaviour
         SetPlayers(false, false);
         isBotGame = true;
         ResetGame();
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            PauseGame();
+        }
+    }
+
+    private void PauseGame()
+    {
+        ballVelocityPrePuase = ball.GetComponent<Ball>().rb.velocity;
+        ball.GetComponent<Ball>().rb.velocity = Vector2.zero;
+        pauseCanvas.enabled = true;
+        isPaused = true;
+    }
+
+    public void Resume()
+    {
+        ball.GetComponent<Ball>().rb.velocity = ballVelocityPrePuase;
+        pauseCanvas.enabled = false;
+        isPaused = false;
+    }
+
+    public void QuitToMenu()
+    {
+        EndGame();
     }
 
     public void Score(bool didPlayer1Score)
@@ -100,6 +131,8 @@ public class GameManager : MonoBehaviour
         player1Txt.text = player1Score.ToString();
         player1Wins.enabled = false;
         player2Wins.enabled = false;
+        pauseCanvas.enabled = false;
+        isPaused = false;
         ResetBall();
     }
 

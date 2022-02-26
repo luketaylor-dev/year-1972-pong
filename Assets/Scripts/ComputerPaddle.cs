@@ -15,6 +15,12 @@ public class ComputerPaddle : Paddle
     // Update is called once per frame
     void Update()
     {
+        if (GameManager.instance.isPaused)
+        {
+            UpdateMotor(0);
+            return;
+        }
+
         //if distance between paddle and ball is bigger than distance the paddle can see don't do anything
         float distance = Vector3.Distance(transform.position, GameManager.instance.ball.transform.transform.position);
         if (distance > PlayerPrefs.GetFloat("aiSeeDistance"))
