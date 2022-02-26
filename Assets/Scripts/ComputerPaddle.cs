@@ -30,6 +30,6 @@ public class ComputerPaddle : Paddle
             y = -1;
         }
 
-        UpdateMotor(new Vector3(0, y, 0));
+        UpdateMotor(y);
     }
 }

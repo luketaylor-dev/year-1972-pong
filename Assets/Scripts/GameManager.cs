@@ -63,6 +63,7 @@ public class GameManager : MonoBehaviour
                 PlayerPrefs.SetFloat("aiSeeDistance", PlayerPrefs.GetFloat("aiSeeDistance") - 0.5f);
             }
         }
+        Debug.Log(PlayerPrefs.GetFloat("aiSeeDistance"));
 
         if (player1Score == winScore || player2Score == winScore)
         {

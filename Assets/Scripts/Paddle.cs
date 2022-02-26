@@ -13,14 +13,8 @@ public class Paddle : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
     }
 
-    protected virtual void UpdateMotor(Vector3 input)
+    protected virtual void UpdateMotor(float input)
     {
-        
-        //Reset MoveDelta
-        moveDelta = new Vector3(0, input.y * yspeed, 0);
-        
-
-        // Make player move
-        transform.Translate(0, moveDelta.y * Time.deltaTime, 0);
+        rb.velocity = new Vector2(rb.velocity.x, input * yspeed);
     }
 }
