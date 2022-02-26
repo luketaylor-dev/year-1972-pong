@@ -16,6 +16,11 @@ public class GameManager : MonoBehaviour
     public GameObject player1Paddle;
     public GameObject player2Paddle;
     
+    //audio
+    public AudioSource paddleSound;
+    public AudioSource wallSound;
+    public AudioSource scoreSound;
+    
     //ui
     public TextMeshProUGUI player2Txt;
     public TextMeshProUGUI player1Txt;
@@ -46,6 +51,7 @@ public class GameManager : MonoBehaviour
 
     public void Score(bool didPlayer1Score)
     {
+        scoreSound.Play();
         if (didPlayer1Score)
         {
             player1Score++;

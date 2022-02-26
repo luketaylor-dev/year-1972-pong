@@ -12,7 +12,6 @@ public class Ball : MonoBehaviour
     public float speedIncrease = 1.1f;
     
     private Rigidbody2D rb;
-    private Vector2 lastVelocity;
     private int hits = 0;
 
     public void Awake()
@@ -23,7 +22,6 @@ public class Ball : MonoBehaviour
     public void Start()
     {
         Launch();
-        lastVelocity = rb.velocity;
     }
 
     private void Launch()
@@ -33,15 +31,21 @@ public class Ball : MonoBehaviour
         rb.velocity = new Vector2(speed * x, speed * y);
     }
 
-    public void Update()
+
+    private void OnCollisionEnter2D(Collision2D other)
     {
-        if (lastVelocity.x < 0 && rb.velocity.x > 0 || lastVelocity.x > 0 && rb.velocity.x < 0)
+        if (other.gameObject.CompareTag("Player"))
         {
             hits++;
             if(hits > hitsTillSpeed)
                 rb.velocity *= speedIncrease;
-        }
+            GameManager.instance.paddleSound.Play();
 
-        lastVelocity = rb.velocity;
-    }
+        }
+        else
+        {
+            GameManager.instance.wallSound.Play();
+        }
+        
+}
 }
