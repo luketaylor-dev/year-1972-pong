@@ -136,4 +136,9 @@ public class GameManager : MonoBehaviour
         SetPlayers(true, true);
         isBotGame = false;
     }
+
+    public void Quit()
+    {
+        Application.Quit();
+    }
 }
