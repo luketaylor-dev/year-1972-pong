@@ -10,24 +10,22 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
     
+    //assets
     public GameObject ball;
     public GameObject ballPrefab;
-
     public GameObject player1Paddle;
     public GameObject player2Paddle;
-
+    
+    //ui
     public TextMeshProUGUI player2Txt;
     public TextMeshProUGUI player1Txt;
-
     public TextMeshProUGUI player1Wins;
     public TextMeshProUGUI player2Wins;
-
     public Canvas menuCanvas;
 
+    //settings
     public int winScore = 10;
-
     public float defaultAiSeeDistance =  7f;
-
     public bool isBotGame = true;
     
     private int player2Score;
@@ -52,18 +50,23 @@ public class GameManager : MonoBehaviour
         {
             player1Score++;
             player1Txt.text = player1Score.ToString();
-            PlayerPrefs.SetFloat("aiSeeDistance", PlayerPrefs.GetFloat("aiSeeDistance") + 0.5f);
+            
+            //if player2 is a computer and player 1 is a player, increase computers see distance
+            if (player2Paddle.GetComponent<ComputerPaddle>().enabled && !isBotGame)
+            {
+                PlayerPrefs.SetFloat("aiSeeDistance", PlayerPrefs.GetFloat("aiSeeDistance") + 0.5f);
+            }
         }
         else
         {
             player2Score++;
             player2Txt.text = player2Score.ToString();
+            //if player2 is a computer and player 1 is a player, decrease computers see distance
             if (player2Paddle.GetComponent<ComputerPaddle>().enabled && !isBotGame)
             {
                 PlayerPrefs.SetFloat("aiSeeDistance", PlayerPrefs.GetFloat("aiSeeDistance") - 0.5f);
             }
         }
-        Debug.Log(PlayerPrefs.GetFloat("aiSeeDistance"));
 
         if (player1Score == winScore || player2Score == winScore)
         {
@@ -109,6 +112,7 @@ public class GameManager : MonoBehaviour
         ball = Instantiate(ballPrefab, new Vector3(0, 0, 0), Quaternion.identity);
     }
 
+    //set players/computers depending what picked
     private void SetPlayers(bool player1Playing, bool player2Playing)
     {
         player1Paddle.GetComponent<PlayerPaddle>().enabled = player1Playing;

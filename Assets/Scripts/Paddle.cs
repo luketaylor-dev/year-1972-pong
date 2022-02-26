@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class Paddle : MonoBehaviour
 {
-    protected Vector3 moveDelta;
+    //settings
     public float yspeed = 6f;
-    private Rigidbody2D rb;
     public bool isPlayer1;
+    
+    private Rigidbody2D rb;
     public virtual void Start()
     {
         rb = GetComponent<Rigidbody2D>();

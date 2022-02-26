@@ -6,9 +6,11 @@ using Random = UnityEngine.Random;
 
 public class Ball : MonoBehaviour
 {
+    //ball speed settings
     public float speed = 6f;
     public int hitsTillSpeed = 10;
     public float speedIncrease = 1.1f;
+    
     private Rigidbody2D rb;
     private Vector2 lastVelocity;
     private int hits = 0;
