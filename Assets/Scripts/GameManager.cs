@@ -32,6 +32,7 @@ public class GameManager : MonoBehaviour
     //settings
     public int winScore = 10;
     public float defaultAiSeeDistance =  7f;
+    public float aiSeeIncrement = 0.5f;
     public bool isBotGame = true;
     public bool isPaused = false;
     
@@ -54,7 +55,7 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape) && !menuCanvas.enabled)
         {
             PauseGame();
         }
@@ -87,22 +88,13 @@ public class GameManager : MonoBehaviour
         {
             player1Score++;
             player1Txt.text = player1Score.ToString();
-            
-            //if player2 is a computer and player 1 is a player, increase computers see distance
-            if (player2Paddle.GetComponent<ComputerPaddle>().enabled && !isBotGame)
-            {
-                PlayerPrefs.SetFloat("aiSeeDistance", PlayerPrefs.GetFloat("aiSeeDistance") + 0.5f);
-            }
+            UpdateAiSeeDistance(1);
         }
         else
         {
             player2Score++;
             player2Txt.text = player2Score.ToString();
-            //if player2 is a computer and player 1 is a player, decrease computers see distance
-            if (player2Paddle.GetComponent<ComputerPaddle>().enabled && !isBotGame)
-            {
-                PlayerPrefs.SetFloat("aiSeeDistance", PlayerPrefs.GetFloat("aiSeeDistance") - 0.5f);
-            }
+            UpdateAiSeeDistance(-1);
         }
 
         if (player1Score == winScore || player2Score == winScore)
@@ -159,6 +151,15 @@ public class GameManager : MonoBehaviour
         
         player1Paddle.GetComponent<ComputerPaddle>().enabled = !player1Playing;
         player2Paddle.GetComponent<ComputerPaddle>().enabled = !player2Playing;
+    }
+
+    private void UpdateAiSeeDistance(int multiplier)
+    {
+        //if player2 is a computer and player 1 is a player, decrease computers see distance
+        if (player2Paddle.GetComponent<ComputerPaddle>().enabled && !isBotGame)
+        {
+            PlayerPrefs.SetFloat("aiSeeDistance", PlayerPrefs.GetFloat("aiSeeDistance") + (0.5f * multiplier));
+        }
     }
 
     public void Start1Player()
