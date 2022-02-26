@@ -1,14 +1,26 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class ComputerPaddle : Paddle
 {
+    public override void Start()
+    {
+        base.Start();
+        if (!PlayerPrefs.HasKey("aiSeeDistance"))
+            PlayerPrefs.SetFloat("aiSeeDistance", GameManager.instance.defaultAiSeeDistance);
+    }
 
     // Update is called once per frame
     void Update()
     {
-        int y = 0;
+        float distance = Vector3.Distance(transform.position, GameManager.instance.ball.transform.transform.position);
+
+        if (distance > PlayerPrefs.GetFloat("aiSeeDistance"))
+            return;
+
+        var y = 0;
         if (transform.position.y < GameManager.instance.ball.transform.position.y)
         {
             y = 1;
@@ -17,10 +29,7 @@ public class ComputerPaddle : Paddle
         {
             y = -1;
         }
-        if (y == -1 && transform.position.y <= -3.5 || y == 1 && transform.position.y >= 3.5)
-        {
-            return;
-        }
+
         UpdateMotor(new Vector3(0, y, 0));
     }
 }

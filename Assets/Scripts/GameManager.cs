@@ -25,6 +25,10 @@ public class GameManager : MonoBehaviour
     public Canvas menuCanvas;
 
     public int winScore = 10;
+
+    public float defaultAiSeeDistance =  7f;
+
+    public bool isBotGame = true;
     
     private int player2Score;
     private int player1Score;
@@ -38,6 +42,7 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         SetPlayers(false, false);
+        isBotGame = true;
         ResetGame();
     }
 
@@ -47,11 +52,16 @@ public class GameManager : MonoBehaviour
         {
             player1Score++;
             player1Txt.text = player1Score.ToString();
+            PlayerPrefs.SetFloat("aiSeeDistance", PlayerPrefs.GetFloat("aiSeeDistance") + 0.5f);
         }
         else
         {
             player2Score++;
             player2Txt.text = player2Score.ToString();
+            if (player2Paddle.GetComponent<ComputerPaddle>().enabled && !isBotGame)
+            {
+                PlayerPrefs.SetFloat("aiSeeDistance", PlayerPrefs.GetFloat("aiSeeDistance") - 0.5f);
+            }
         }
 
         if (player1Score == winScore || player2Score == winScore)
@@ -88,6 +98,7 @@ public class GameManager : MonoBehaviour
         ResetGame();
         menuCanvas.enabled = true;
         SetPlayers(false, false);
+        isBotGame = true;
     }
     
 
@@ -111,11 +122,13 @@ public class GameManager : MonoBehaviour
         menuCanvas.enabled = false;
         ResetGame();
         SetPlayers(true, false);
+        isBotGame = false;
     }
     public void Start2Player()
     {
         menuCanvas.enabled = false;
         ResetGame();
         SetPlayers(true, true);
+        isBotGame = false;
     }
 }
